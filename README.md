@@ -1,5 +1,14 @@
 # react-native-cloudkit
 
+#### Ready for Use?
+No. Maybe in a few days. But not yet.
+
+## Getting started
+
+`$ npm install react-native-cloudkit --save`
+
+No native code is currently used, so no need to link.
+
 #### Production vs Development
 
 Apple has two servers that do not have the same data in them. Development, and production. You can add/alter data in them from their web portal. By default, this library will access the development server when you create a react-native development build, and the production server when creating a release build:
@@ -52,4 +61,4 @@ This library uses CloudKit JS to access your Apple's Cloudkit servers. This is s
 
 #### Does this library use native code?
 
-Currently it does not. Everything is in JS, so yes, you can use it with Expo. 
+Currently it does not. Everything is in JS, so yes, you can use it with Expo.

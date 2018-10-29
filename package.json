@@ -15,5 +15,18 @@
     "cloudkit"
   ],
   "author": "Kjell Connelly",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KjellConnelly/react-native-cloudkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KjellConnelly/react-native-cloudkit/issues"
+  },
+  "homepage": "https://github.com/KjellConnelly/react-native-cloudkit#readme",
+  "peerDependencies": {
+    "react-native": "^0.41.2"
+  },
+  "dependencies": {},
+  "devDependencies": {
 }
