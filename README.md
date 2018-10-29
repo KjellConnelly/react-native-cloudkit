@@ -9,6 +9,42 @@ No. Maybe in a few days. But not yet.
 
 No native code is currently used, so no need to link.
 
+## Import into your React-Native Component
+
+`import CloudKit from 'react-native-cloudkit'`
+
+## Example Usage for loading a String from CloudKit
+
+```javascript
+import { View, Text } from 'react-native'
+import CloudKit from 'react-native-cloudkit'
+
+export default class MyPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      stringFromServer:undefined,
+    }
+  }
+
+  componentDidMount() {
+    CloudKit.test()
+  }
+
+  render() {
+    return (
+      <View>
+        <Text>
+          {this.state.stringFromServer || "Loading..."}
+        </Text>
+      </View>
+    )
+  }
+
+}
+
+```
+
 #### Production vs Development
 
 Apple has two servers that do not have the same data in them. Development, and production. You can add/alter data in them from their web portal. By default, this library will access the development server when you create a react-native development build, and the production server when creating a release build:
