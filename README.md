@@ -28,7 +28,34 @@ export default class MyPage extends Component {
   }
 
   componentDidMount() {
-    CloudKit.test()
+    const options = {
+      containers: [{
+        containerIdentifier: 'iCloud.com.mywebsite.myapp',
+        apiTokenAuth: {
+            apiToken: '432940djodu9ehdusfuiwhfiudshfkjdsfbuew89e2hf982efu'
+        },
+        environment: 'development'
+      }]
+    }
+    CloudKit.init(options, CK=>{
+      const container = CK.getDefaultContainer()
+      const publicDatabase = container.publicCloudDatabase
+      // fetched by a specific record's name
+      const recordName = "M40AD42A-B4D4-1292-A10A-097CD7927364"
+      publicDatabase.fetchRecords(recordName).then(response=>{
+        if (response.hasErrors) {
+          console.log(response.errors)
+        } else {
+          const records = response.records
+          console.log(records)
+          const record = records[0]
+          // I created this object on the iCloud Web Portal already and added a 'title' field. So I know this exists.
+          this.setState({
+            stringFromServer:record.fields.title
+          })
+        }
+      })
+    })
   }
 
   render() {
@@ -59,7 +86,7 @@ You can change this default behavior if you want.
 
 #### What version of CloudKit JS is currently being used?
 
-Version 2.0. You can use a different version if you want, though this is the one being added to this package currently. A copy of it has been added locally to the project.
+Version 1.0. You can use a different version if you want, though this is the one being added to this package currently. A copy of it has been added locally to the project. Although 2.0 is available, and 1.0 is planned to be deprecated at some point in the future, 2.0 requires crypto which to my knowledge is a NodeJS module which by default doesn't work with React Native. So after getting the red screen of death for a few minutes, I just switched to 1.0.
 
 #### Why did you create this library?
 
