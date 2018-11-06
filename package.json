@@ -1,6 +1,6 @@
 {
   "name": "react-native-cloudkit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A react-native library to connect to and use CloudKit (via cloudkitjs) on iOS and Android instead of needing to roll your own server and hopefully pay nothing.",
   "main": "index",
   "scripts": {
