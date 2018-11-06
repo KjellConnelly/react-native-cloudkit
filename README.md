@@ -15,6 +15,7 @@ No native code is currently used, so no need to link.
 
 ## Example Usage for loading a String from CloudKit
 
+This example fetches a record by the name and then queries for all 'Videos' objects. All data is displayed via ```setState()```
 ```javascript
 import { View, Text } from 'react-native'
 import CloudKit from 'react-native-cloudkit'
@@ -23,51 +24,63 @@ export default class MyPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      stringFromServer:undefined,
+      recordTitleViaFetch:undefined,
+      recordTitlesViaQuery:[],
     }
   }
 
-  componentDidMount() {
-    const options = {
+  async componentDidMount() {
+    const initOptions = {
       containers: [{
         containerIdentifier: 'iCloud.com.mywebsite.myapp',
         apiTokenAuth: {
-            apiToken: '432940djodu9ehdusfuiwhfiudshfkjdsfbuew89e2hf982efu'
+            apiToken: 'lfjalsfjsau0jdosanf8918fsfasfnashosidjlksandldas9fhw1f'
         },
         environment: 'development'
       }]
     }
-    CloudKit.init(options, CK=>{
-      const container = CK.getDefaultContainer()
-      const publicDatabase = container.publicCloudDatabase
-      // fetched by a specific record's name
-      const recordName = "M40AD42A-B4D4-1292-A10A-097CD7927364"
-      publicDatabase.fetchRecords(recordName).then(response=>{
-        if (response.hasErrors) {
-          console.log(response.errors)
-        } else {
-          const records = response.records
-          console.log(records)
-          const record = records[0]
-          // I created this object on the iCloud Web Portal already and added a 'title' field. So I know this exists.
-          this.setState({
-            stringFromServer:record.fields.title
-          })
-        }
+    const CloudKitJS = CloudKit.init(initOptions)
+    try {
+      // get record(s) by name
+      const records = await CloudKit.fetchRecordsByName("C42AC12A-B2F4-1491-A37B-4213CB9127264")
+      this.setState({
+        recordTitleViaFetch:records[0].fields.title.value
       })
-    })
+
+      // query for all records of type "Videos"
+      const queryOptions = {
+        query: {
+          recordType:"Videos"
+        }
+      }
+      const queryResponse = await CloudKit.query(queryOptions)
+      if (queryResponse.moreComing) {
+        // TODO: Maximum records hit, should query more...
+      } else {
+        const results = queryResponse["_results"]
+        this.setState({
+          recordTitlesViaQuery:results.map(record=>record.fields.title.value)
+        })
+      }
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   render() {
     return (
       <View>
         <Text>
-          {this.state.stringFromServer || "Loading..."}
+          {this.state.recordTitleViaFetch || "Loading..."}
         </Text>
+        {this.state.recordTitlesViaQuery.map((title, i)=>{return(
+          <Text key={"title"+i}>
+            {title}
+          </Text>
+        )})}
       </View>
     )
   }
-
 }
 
 ```
@@ -125,3 +138,8 @@ This library uses CloudKit JS to access your Apple's Cloudkit servers. This is s
 #### Does this library use native code?
 
 Currently it does not. Everything is in JS, so yes, you can use it with Expo.
+
+#### Common Error Handling
+
+##### Type is not marked indexable. Enable the “queryable” index on this field in the indexes section.
+When you query for a record, you can't query for just anything by default. So you need to go into the Cloud Kit Dashboard webpage and make this type as indexable.

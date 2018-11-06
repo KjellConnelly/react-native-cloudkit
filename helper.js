@@ -2,7 +2,7 @@ import CloudKitJS from './local_versions/1.0/cloudkit'
 
 export default class helper {
   static getContainerAndDatabase(options) {
-    const container = options.container == "default" ?
+    const container = ((options.container == "default") || (options.container == undefined)) ?
       CloudKitJS.getDefaultContainer() :
       CloudKitJS.getContainer(options.container)
 
@@ -13,6 +13,6 @@ export default class helper {
           container.publicCloudDatabase
       )
 
-    return {container, database}
+    return {container:container, database:database}
   }
 }

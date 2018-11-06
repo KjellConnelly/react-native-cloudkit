@@ -25,7 +25,6 @@ export default class CloudKit {
   }) {
     return new Promise((resolve, reject)=>{
       const CD = helper.getContainerAndDatabase(options)
-
       const modifiedOptions = {
         zoneID:options.zoneID,
         resultsLimit:options.resultsLimit,
@@ -33,7 +32,7 @@ export default class CloudKit {
         zoneWide:options.zoneWide,
       }
 
-      database.performQuery(options.query, modifiedOptions).then(response=>{
+      CD.database.performQuery(options.query).then(response=>{
         if (response.hasErrors) {
           reject(response.errors)
         } else {
