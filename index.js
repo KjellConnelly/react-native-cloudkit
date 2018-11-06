@@ -1,16 +1,11 @@
 import { Platform, Linking, NativeModules } from 'react-native'
-import CloudKitJS from './local_versions/2.0/cloudkit'
+import CloudKitJS from './local_versions/1.0/cloudkit'
 
 export default class CloudKit {
-  static test() {
+  static init(options, callback) {
     const configured = CloudKitJS.configure({
-      containers: [{
-        containerIdentifier: '[insert your container ID here]',
-        apiTokenAuth: {
-            apiToken: '[insert your API token and other authentication properties here]'
-        },
-        environment: 'development'
-      }]
+      containers: options.containers
     })
+    callback(CloudKitJS)
   }
 }
